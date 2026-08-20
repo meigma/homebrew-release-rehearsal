@@ -5,7 +5,7 @@ cask "meigma-release-cli" do
 
   on_macos do
     on_arm do
-      sha256 "f9ac64eb1b1191d58176216c4e9ccffe0cfce0ea39f219e9c65a429dcf5b2aaa"
+      sha256 "0000000000000000000000000000000000000000000000000000000000000000"
       url "https://github.com/meigma/release/releases/download/v#{version}/release-cli_#{version}_darwin_arm64.tar.gz"
     end
     on_intel do
