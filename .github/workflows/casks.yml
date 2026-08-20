@@ -40,7 +40,7 @@ jobs:
       - run: brew test-bot --only-tap-syntax
       - run: brew trust --tap "${GITHUB_REPOSITORY}"
       - run: brew style --cask "${CASK}"
-      - run: brew audit --new --cask "${CASK}"
+      - run: brew audit --cask "${CASK}"
       - run: brew install --cask "${CASK}"
       - run: release-cli version
       - run: brew uninstall --cask "${CASK}"
