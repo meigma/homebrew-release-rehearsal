@@ -1,0 +1,46 @@
+name: Cask CI
+
+on:
+  pull_request:
+    paths:
+      - 'Casks/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'Casks/**'
+  workflow_dispatch:
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
+jobs:
+  validate:
+    name: Validate cask
+    runs-on: macos-26
+    timeout-minutes: 15
+    permissions:
+      actions: read
+      checks: read
+      contents: read
+      pull-requests: read
+    env:
+      CASK: meigma/homebrew-release-rehearsal/meigma-release-cli
+    steps:
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@b35a29a0f83ee8b8ca07b219fc8db3d7bb88ab49 # 2026.08.10.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: brew test-bot --only-cleanup-before
+      - run: brew test-bot --only-setup
+      - run: brew test-bot --only-tap-syntax
+      - run: brew trust --tap "${GITHUB_REPOSITORY}"
+      - run: brew style --cask "${CASK}"
+      - run: brew audit --new --cask "${CASK}"
+      - run: brew install --cask "${CASK}"
+      - run: release-cli version
+      - run: brew uninstall --cask "${CASK}"
