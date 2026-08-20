@@ -33,5 +33,12 @@ cask "meigma-release-cli" do
 
   binary "release-cli"
 
+  postflight do
+    if OS.mac?
+      system_command "/usr/bin/xattr",
+                     args: ["-dr", "com.apple.quarantine", "#{staged_path}/release-cli"]
+    end
+  end
+
   # No zap stanza required
 end
